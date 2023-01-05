@@ -1,0 +1,63 @@
+import { initializeApp } from 'firebase/app';
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
+import {
+    getFirestore,
+    doc,
+    getDoc, // Read contents of doc
+    setDoc // Modify contents of doc
+} from "firebase/firestore";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyDBe77BrPPrsq5Xt8HHNfBPm539OGvkcfI",
+    authDomain: "crwn-clothing-db-cb734.firebaseapp.com",
+    projectId: "crwn-clothing-db-cb734",
+    storageBucket: "crwn-clothing-db-cb734.appspot.com",
+    messagingSenderId: "763185953216",
+    appId: "1:763185953216:web:b3d1ca521ec9c0859b7025"
+  };
+  
+  // Initialize Firebase
+  const firebaseApp = initializeApp(firebaseConfig);
+
+  const provider = new GoogleAuthProvider();
+
+  provider.setCustomParameters({
+    prompt: "select_account"
+  });
+
+  export const auth = getAuth();
+
+  // Opens a single sign in popup which returns the response from the user.
+  export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+  export const db = getFirestore();
+
+  // Method takes the user returned from google and attempts to create a document in firebase with those details.
+  export const createUserDocumentFromAuth = async ({uid, email, displayName}) => {
+    // This creates a namespace which will be a unique identifier for finding the user document in firestore.
+    // It hasn't created a document.
+    const userDocRef = doc(db, 'users', uid);
+
+    // This attempts to retrieve the contents of a document based on the user reference.
+    const userSnapshot = await getDoc(userDocRef);
+
+    // Check if the user data exists.
+    if (!userSnapshot.exists()) {
+        const createdAt = new Date();
+
+        try {
+            await setDoc(userDocRef, {
+                displayName, 
+                email,
+                createdAt
+            })
+        } catch (error) {
+            console.log("Error creating user", error.message);
+        }
+    }
+    // If so return the document reference.
+    // If it doesn't exist we want to set the document using the user snapshot.
+
+    return userDocRef;
+  }
