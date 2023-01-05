@@ -29,7 +29,9 @@ const firebaseConfig = {
   export const auth = getAuth();
 
   // Opens a single sign in popup which returns the response from the user.
+  // Naming with google makes it clear we could be using other providers.
   export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+  export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
   export const db = getFirestore();
 
