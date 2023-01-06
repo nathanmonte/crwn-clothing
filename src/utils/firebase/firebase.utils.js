@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider} from "firebase/auth";
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, email} from "firebase/auth";
 import {
     getFirestore,
     doc,
@@ -36,7 +36,8 @@ const firebaseConfig = {
   export const db = getFirestore();
 
   // Method takes the user returned from google and attempts to create a document in firebase with those details.
-  export const createUserDocumentFromAuth = async ({uid, email, displayName}) => {
+  export const createUserDocumentFromAuth = async ({uid, email, displayName}, additionalInformation) => {
+    if (!uid) return;
     // This creates a namespace which will be a unique identifier for finding the user document in firestore.
     // It hasn't created a document.
     const userDocRef = doc(db, 'users', uid);
@@ -52,7 +53,8 @@ const firebaseConfig = {
             await setDoc(userDocRef, {
                 displayName, 
                 email,
-                createdAt
+                createdAt,
+                ...additionalInformation
             })
         } catch (error) {
             console.log("Error creating user", error.message);
@@ -62,4 +64,12 @@ const firebaseConfig = {
     // If it doesn't exist we want to set the document using the user snapshot.
 
     return userDocRef;
+  }
+
+  export const createAuthUserWithEmailAndPassword = async (email, password, displayName) => {
+    if (!email || !password) return;
+
+    // Authenticate user with email and password
+    return await createUserWithEmailAndPassword(auth, email, password, {displayName});
+
   }
