@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, email} from "firebase/auth";
+import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, email, signInWithEmailAndPassword} from "firebase/auth";
 import {
     getFirestore,
     doc,
@@ -72,4 +72,25 @@ const firebaseConfig = {
     // Authenticate user with email and password
     return await createUserWithEmailAndPassword(auth, email, password, {displayName});
 
+  }
+
+  export const getUserDocument = async (uid) => {
+    if (!uid) return;
+
+    const userDocRef = doc(db, 'users', uid);
+
+    // This attempts to retrieve the contents of a document based on the user reference.
+    const userSnapshot = await getDoc(userDocRef);
+
+    if (!userSnapshot.exists()) {
+        alert("There has been an error. User document is missing");
+        return;
+    }
+    return userSnapshot;
+  }
+
+  export const signInWithGoogleEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+
+    return await signInWithEmailAndPassword(auth, email, password);
   }

@@ -59,7 +59,7 @@ const SignUpForm = (props) => {
     }
 
     return (
-        <div>
+        <div >
             <h1>Don't have an account?</h1>
             <h2>Sign up with your email and password</h2>
             <form onSubmit={handleSubmit}>
@@ -67,7 +67,7 @@ const SignUpForm = (props) => {
 
                 <FormInput label="Email" type="email" required onChange={handleChange} name="email" value={email} />
 
-                <FormInput label="Password" required onChange={handleChange} name="password" value={password} />
+                <FormInput label="Password" type="password" required onChange={handleChange} name="password" value={password} />
 
                 <FormInput label="Confirm Password" type="password" required onChange={handleChange} name="confirmPassword" value={confirmPassword} />
 
