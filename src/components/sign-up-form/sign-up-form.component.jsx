@@ -21,6 +21,10 @@ const SignUpForm = (props) => {
     // Destructure all of the properties from the model.
     const { displayName, email, password, confirmPassword } = formFields;
 
+    const resetFormFields = () => {
+        setFormFields(defaultFormFields);
+    }
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -40,8 +44,9 @@ const SignUpForm = (props) => {
         try {
             const response = await createAuthUserWithEmailAndPassword(email, password, displayName);
             const { user } = response;
-            const userDocRef = await createUserDocumentFromAuth({ ...user, displayName });
-            console.log(userDocRef);
+
+            await createUserDocumentFromAuth({ ...user, displayName });
+            resetFormFields(defaultFormFields);
         } catch (error) {
             // Does user already exist?
             if (error.code === "auth/email-already-in-use") alert("User already exists.");

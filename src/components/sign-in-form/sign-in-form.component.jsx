@@ -28,13 +28,17 @@ const SignInForm = () => {
         setFormFields({ ...formFields, [name]: value })
     }
 
+    const resetFormFields = () => {
+        setFormFields(formFieldDefaults);
+    }
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const userCredential = await signInWithGoogleEmailAndPassword(email, password);
-            const document = await getUserDocument(userCredential.user.uid);
-            console.log(document);
+            const { user } = await signInWithGoogleEmailAndPassword(email, password);
+
+            resetFormFields();
         } catch (error) {
             switch (error.code) {
                 case "auth/wrong-password":

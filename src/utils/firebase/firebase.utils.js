@@ -1,5 +1,15 @@
 import { initializeApp } from 'firebase/app';
-import {getAuth, signInWithRedirect, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, email, signInWithEmailAndPassword} from "firebase/auth";
+import {
+  getAuth, 
+  signInWithRedirect, 
+  signInWithPopup, 
+  GoogleAuthProvider, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut,
+  // NextOrObserver,
+  onAuthStateChanged
+} from "firebase/auth";
 import {
     getFirestore,
     doc,
@@ -94,3 +104,12 @@ const firebaseConfig = {
 
     return await signInWithEmailAndPassword(auth, email, password);
   }
+
+ export const signOutUser = () => signOut(auth); 
+
+ /**
+  * This makes use of an obseravable stream.
+  * Next, error and finished callbacks are possible.
+  * Work like a normal node.js stream.
+  */
+ export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth, callback);
