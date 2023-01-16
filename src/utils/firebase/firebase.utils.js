@@ -14,7 +14,11 @@ import {
     getFirestore,
     doc,
     getDoc, // Read contents of doc
-    setDoc // Modify contents of doc
+    setDoc, // Modify contents of doc
+    collection,
+    writeBatch,
+    query,
+    getDocs
 } from "firebase/firestore";
 
 // Your web app's Firebase configuration
@@ -44,6 +48,36 @@ const firebaseConfig = {
   export const signInWithGoogleRedirect = () => signInWithRedirect(auth, provider);
 
   export const db = getFirestore();
+
+  export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
+    const collectionRef = collection(db, collectionKey);
+    // transactions - successful unit of work
+    // Successful write when all unit are added successfully.
+    // Batch works as a transaction
+    const batch = writeBatch(db);
+
+    objectsToAdd.forEach(object => {
+      const docRef = doc(collectionRef, object.title.toLowerCase());
+      batch.set(docRef, object);
+    })
+
+    await batch.commit();
+
+    console.log("done")
+  } 
+
+  export const getCategoriesAndDocuments = async () => {
+    const collectionRef = collection(db, 'categories');
+    const q = query(collectionRef);
+
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.reduce((accumulator, docSnapshot) => {
+      const {title, items} = docSnapshot.data();
+
+      accumulator[title.toLowerCase()] = items;
+      return accumulator;
+    }, {});
+  }
 
   // Method takes the user returned from google and attempts to create a document in firebase with those details.
   export const createUserDocumentFromAuth = async ({uid, email, displayName}, additionalInformation) => {
