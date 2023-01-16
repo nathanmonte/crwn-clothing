@@ -8,8 +8,8 @@ import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component
 import { UserContext } from "../../context/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { ReactComponent as CrownLogo } from "./../../assets/crown.svg";
-import "./navigation.styles.scss";
 import { CartContext } from "../../context/cart.context";
+import { NavigationContainer, LogoContainer, NavLinksContainer, NavLink } from "./navigation.styles";
 
 const Navigation = () => {
 
@@ -24,27 +24,29 @@ const Navigation = () => {
 
     return (
         <Fragment>
-            <div className="navigation">
-                <Link className="logo-container" to="/">
-                    <CrownLogo alt="logo" />
-                </Link>
-                <div className="nav-links-container" >
-                    <Link className="nav-link" to="/shop">
-                        <p>SHOP</p>
-                    </Link>
-                    {
-                        currentUser ? (
-                            <span className="nav-link" onClick={logOut}>SIGN-OUT</span>
-                        ) : (
-                            <Link className="nav-link" to="/auth">
-                                <p>SIGN-IN</p>
-                            </Link>
-                        )
-                    }
-                    <CartIcon />
-                </div>
-                {/* This is a conditional element. It returns the second item if the first item is true. */}
-                {isCartOpen && <CartDropdown />}
+            <div>
+                <NavigationContainer className="navigation">
+                    <LogoContainer to="/">
+                        <CrownLogo alt="logo" />
+                    </LogoContainer>
+                    <NavLinksContainer>
+                        <NavLink to="/shop">
+                            SHOP
+                        </NavLink>
+                        {
+                            currentUser ? (
+                                <NavLink as="span" onClick={logOut}>SIGN-OUT</NavLink>
+                            ) : (
+                                <NavLink to="/auth">
+                                    SIGN-IN
+                                </NavLink>
+                            )
+                        }
+                        <CartIcon />
+                    </NavLinksContainer>
+                    {/* This is a conditional element. It returns the second item if the first item is true. */}
+                    {isCartOpen && <CartDropdown />}
+                </NavigationContainer>
             </div>
             <Outlet />
         </Fragment >

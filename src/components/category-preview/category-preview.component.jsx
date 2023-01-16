@@ -1,8 +1,7 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
 import { CategoriesContext } from "../../context/categories.context";
 import Products from "../products/products.component";
-import "./category-preview.styles.scss"
+import { CategoryLink } from "./category-preview.styles";
 
 const CategoryPreview = ({ category, categoryName }) => {
 
@@ -14,11 +13,11 @@ const CategoryPreview = ({ category, categoryName }) => {
     return <div className="category-preview-container">
 
         <h2>
-            <Link to={categoryName}>
+            <CategoryLink to={categoryName}>
                 <span className="title">
                     {categoryDisplayName}
                 </span>
-            </Link>
+            </CategoryLink>
         </h2>
         {<Products products={category.filter((_, index) => index < previewSize)} />}
     </div >
