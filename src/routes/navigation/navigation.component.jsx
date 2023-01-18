@@ -1,22 +1,23 @@
 import { useContext } from "react";
 import { Fragment } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 import CartIcon from "../../components/cart-icon/cart-icon.component";
 import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
-import { UserContext } from "../../context/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 import { ReactComponent as CrownLogo } from "./../../assets/crown.svg";
 import { CartContext } from "../../context/cart.context";
 import { NavigationContainer, LogoContainer, NavLinksContainer, NavLink } from "./navigation.styles";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../store/user/user.selector";
 
 const Navigation = () => {
 
+    // A selector allows you to select values you care about from the entire state object passed to every component.
+    const currentUser = useSelector(selectCurrentUser);
     const { isCartOpen } = useContext(CartContext);
 
-    // Use context re-renders due to any changes in the context which it has access to.
-    const { currentUser } = useContext(UserContext);
 
     const logOut = async () => {
         await signOutUser();
