@@ -2,31 +2,22 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
-
 import App from './App';
 import './index.scss';
-// import { UserProvider } from './context/user.context';
 import { CartProvider } from './context/cart.context';
-import { CategoriesProvider } from './context/categories.context';
 
 // Redux has been using providers from the get go so is used similar to context.
 import { Provider } from "react-redux";
 import { store } from './store/store';
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      {/* Provides user context */}
-        {/* <UserProvider> */}
-          <CategoriesProvider>
             <CartProvider>
               <App />
             </CartProvider>
-          </CategoriesProvider>
-        {/* </UserProvider> */}
       </BrowserRouter>
     </Provider>
   </React.StrictMode>

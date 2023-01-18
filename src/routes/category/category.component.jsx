@@ -1,23 +1,23 @@
-import { useEffect } from "react";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/button/button.component";
 import ProductCard from "../../components/product-card/product-card.component";
-import { CategoriesContext } from "../../context/categories.context";
+import { selectCategoryMap } from "../../store/categories/category.selector";
 import "./category.styles.scss";
 
 const Category = () => {
-    const { categoriesMap, getCategoryDisplayName } = useContext(CategoriesContext);
     const { category: categoryName } = useParams();
+    const categoriesMap = useSelector(selectCategoryMap);
     const navigate = useNavigate();
+    const [products, setProducts] = useState(categoriesMap[categoryName])
 
+
+    // Custom logic
+    const categoryDisplayName = categoryName[0].toUpperCase() + categoryName.slice(1);;
     const goToHome = () => {
         navigate("/home");
     }
-
-    const categoryDisplayName = getCategoryDisplayName(categoryName);
-
-    const [products, setProducts] = useState(categoriesMap[categoryName]);
 
     useEffect(() => {
         setProducts(categoriesMap[categoryName]);
