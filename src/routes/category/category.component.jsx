@@ -11,7 +11,7 @@ const Category = () => {
     const categoriesMap = useSelector(selectCategoryMap);
     const navigate = useNavigate();
     const [products, setProducts] = useState(categoriesMap[categoryName])
-
+    console.log("render/re-rendering category component")
 
     // Custom logic
     const categoryDisplayName = categoryName[0].toUpperCase() + categoryName.slice(1);;
@@ -20,6 +20,7 @@ const Category = () => {
     }
 
     useEffect(() => {
+        console.log("effect fired for setting products");
         setProducts(categoriesMap[categoryName]);
     }, [categoryName, categoriesMap])
 

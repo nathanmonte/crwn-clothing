@@ -71,12 +71,7 @@ const firebaseConfig = {
     const q = query(collectionRef);
 
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.reduce((accumulator, docSnapshot) => {
-      const {title, items} = docSnapshot.data();
-
-      accumulator[title.toLowerCase()] = items;
-      return accumulator;
-    }, {});
+    return querySnapshot.docs.map(docSnapshot => docSnapshot.data());
   }
 
   // Method takes the user returned from google and attempts to create a document in firebase with those details.
