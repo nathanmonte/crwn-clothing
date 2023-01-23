@@ -14,7 +14,7 @@ const Category = () => {
     console.log("render/re-rendering category component")
 
     // Custom logic
-    const categoryDisplayName = categoryName[0].toUpperCase() + categoryName.slice(1);;
+    const categoryDisplayName = categoryName[0].toUpperCase() + categoryName.slice(1);
     const goToHome = () => {
         navigate("/home");
     }

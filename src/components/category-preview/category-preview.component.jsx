@@ -1,13 +1,10 @@
-import { useContext } from "react";
-import { CategoriesContext } from "../../context/categories.context";
 import Products from "../products/products.component";
 import { CategoryLink } from "./category-preview.styles";
 
 const CategoryPreview = ({ category, categoryName }) => {
 
     const previewSize = 4;
-    const { getCategoryDisplayName } = useContext(CategoriesContext);
-    const categoryDisplayName = getCategoryDisplayName(categoryName);
+    const categoryDisplayName = categoryName[0].toUpperCase() + categoryName.slice(1);
 
 
     return <div className="category-preview-container">
