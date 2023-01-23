@@ -4,7 +4,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 import App from './App';
 import './index.scss';
-import { CartProvider } from './context/cart.context';
 
 // Redux has been using providers from the get go so is used similar to context.
 import { Provider } from "react-redux";
