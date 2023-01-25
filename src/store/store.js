@@ -1,6 +1,8 @@
 import { compose, createStore, applyMiddleware} from "redux";
 import logger from "redux-logger"
 import { rootReducer } from "./root-reducer";
+import { persistStore, persistReducer } from "redux-persist";
+import storage from "redux-persist/lib/storage";
 
 // root-reducer - combination of all reducers
 // Store just needs the root reducer
@@ -28,6 +30,14 @@ const loggerMiddleware = (store) => (next) => (action) => {
     console.log("next state: ", store.getState());
 };
 
+const persistConfig = {
+    key: "root",
+    storage,
+    blacklist: ['user']
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
 // Middleware is called before the reducer is called
 // Middleware is an enhancer
 const middleware = [loggerMiddleware];
@@ -36,4 +46,6 @@ const middleware = [loggerMiddleware];
 // Compose passes multiple functions left to right
 const composedEnhancers = compose(applyMiddleware(...middleware));
 
-export const store = createStore(rootReducer, undefined, composedEnhancers);
+export const store = createStore(persistedReducer, undefined, composedEnhancers);
+
+export const persistor = persistStore(store);
